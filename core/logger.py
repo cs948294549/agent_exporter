@@ -41,7 +41,10 @@ def setup_logger(log_level="INFO"):
     os.makedirs(LOG_DIR, exist_ok=True)
     
     # 获取日志级别
-    level = log_level or LOG_LEVEL
+    if LOG_LEVEL is not None:
+        level = LOG_LEVEL
+    else:
+        level = log_level
 
     numeric_level = getattr(logging, level.upper(), logging.INFO)
     
