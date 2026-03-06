@@ -6,6 +6,8 @@ snmp_bp = Blueprint('snmp', __name__, url_prefix='/snmp')
 
 # 导入SNMP相关模块
 from function_snmp.snmp_collector import snmp_get, snmp_walk
+from function_snmp.snmpAgent import snmpget,snmpwalk
+
 from collectors.device_info_collector import global_collector
 import logging
 
@@ -27,13 +29,16 @@ def snmp_agent_get():
         community = data.get('community', COMMON_COMMUNITY)
         oid = data.get('oid')
         coding = data.get('coding', 'utf-8')
-        
+
+        raw_flag = data.get('flag', False)
+
         if not ip or not oid:
             return APIResponse.param_error(message='ip和oid参数不能为空')
-        
-        result = snmp_get(ip, community, oid, coding=coding)
 
-
+        if raw_flag is True:
+            result = snmpget(ip, community, oid, coding=coding)
+        else:
+            result = snmp_get(ip, community, oid, coding=coding)
         return APIResponse.success(data={
             'result': result,
             'ip': ip,
@@ -54,10 +59,16 @@ def snmp_agent_walk():
         community = data.get('community', COMMON_COMMUNITY)
         oid = data.get('oid')
 
+        coding = data.get('coding', 'utf-8')
+        raw_flag = data.get('flag', False)
+        bulk_size = data.get('bulk_size', 10)
+
         if not ip or not oid:
             return APIResponse.param_error(message='ip和oid参数不能为空')
-
-        result = snmp_walk(ip, community, oid)
+        if raw_flag is True:
+            result = snmpwalk(ip, community, oids=oid, coding=coding, bulk_size=bulk_size)
+        else:
+            result = snmp_walk(ip, community, oid)
 
         return APIResponse.success(data={
             'result': result,

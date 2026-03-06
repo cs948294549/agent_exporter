@@ -44,5 +44,5 @@ def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
 
 
 if __name__ == '__main__':
-    aa = snmpget("192.168.130.51", "public", "1.3.6.1.2.1.1.5.0", "utf-8")
+    aa = snmpget("192.168.130.51", "public", "1.3.6.1.2.1.31.1.1.1", "utf-8")
     print(aa)
