@@ -78,7 +78,7 @@ class OIDParser(ABC):
             mtu_bulk_size = int(self.bulk_size/1500*MTU)
 
             raw_data = snmpwalk(ip, community, self.oid_prefix, bulk_size=mtu_bulk_size, coding=self.coding)
-            
+            logger.debug(f"执行SNMP WALK: IP={ip}, OID={self.oid_prefix}, res={raw_data}")
             if raw_data is None:
                 logger.warning(f"设备 {ip} 的OID {self.oid_prefix} 数据采集失败")
                 return None
