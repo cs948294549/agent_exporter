@@ -23,13 +23,12 @@ def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
         res = bulkwalk(ip, community, oids=[oids], bulk_size=bulk_size)
         values = {}
         for i in res:
-            print("====", i)
             if type(i[1]) == bytes or type(i[1]) == int or type(i[1]) == str:
                 if type(i[1]) == bytes:
                     if coding == "utf-8":
                         values[str(i[0])] = i[1].decode("utf-8", "ignore")
                     else:
-                        values[str(i[0])] = i[1]
+                        values[str(i[0])] = i[1].hex()
                 else:
                     values[str(i[0])] = i[1]
             else:

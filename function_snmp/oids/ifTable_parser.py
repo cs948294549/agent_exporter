@@ -55,6 +55,7 @@ class ifPhysAddressParser(CommonIndexParser):
 
         # 解析原始数据为列表形式
         for oid, value in raw_data.items():
+            byte_data = bytes.fromhex(value)
             # 获取实例索引
             oid_parts = oid.split('.')
             if len(oid_parts) < 1:
@@ -65,7 +66,7 @@ class ifPhysAddressParser(CommonIndexParser):
                 index = int(oid_parts[-1])
                 result.append({
                     'index': index,
-                    'value': ':'.join(f"{b:02x}" for b in value),
+                    'value': ':'.join(f"{b:02x}" for b in byte_data),
                     'oid': oid
                 })
             except ValueError:
