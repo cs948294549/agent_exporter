@@ -39,11 +39,15 @@ def snmp_agent_get():
             result = snmpget(ip, community, oid, coding=coding)
         else:
             result = snmp_get(ip, community, oid, coding=coding)
-        return APIResponse.success(data={
-            'result': result,
-            'ip': ip,
-            'oid': oid
-        })
+
+        if result:
+            return APIResponse.success(data={
+                'result': result,
+                'ip': ip,
+                'oid': oid
+            })
+        else:
+            return APIResponse.error(message="采集失败")
     except Exception as e:
         logger.error("snmp_agent_get==={}".format(str(e)))
         return APIResponse.server_error(message=str(e))
@@ -70,12 +74,14 @@ def snmp_agent_walk():
         else:
             result = snmp_walk(ip, community, oid)
 
-        return APIResponse.success(data={
-            'result': result,
-            'ip': ip,
-            'oid': oid
-        })
-
+        if result:
+            return APIResponse.success(data={
+                'result': result,
+                'ip': ip,
+                'oid': oid
+            })
+        else:
+            return APIResponse.error(message="采集失败")
     except Exception as e:
         return APIResponse.server_error(message=str(e))
 

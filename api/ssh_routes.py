@@ -27,12 +27,15 @@ def ssh_agent_run_cmd():
         #     return APIResponse.auth_error(message="ssh权限不足")
 
         result = run_ssh_command(host=ip, vendor=vendor, commands=cmds)
-        return APIResponse.success(data={
-            "ip": ip,
-            "cmds": cmds,
-            "vendor": vendor,
-            "result": result,
-        })
+        if result and result["status"]=="success":
+            return APIResponse.success(data={
+                "ip": ip,
+                "cmds": cmds,
+                "vendor": vendor,
+                "result": result,
+            })
+        else:
+            return APIResponse.error(message="执行失败")
     except Exception as e:
         return APIResponse.server_error(message=str(e))
 
