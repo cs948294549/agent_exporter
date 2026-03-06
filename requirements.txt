@@ -6,3 +6,4 @@ werkzeug==2.2.3
 kafka-python
 redis
 pyyaml
+psutil
