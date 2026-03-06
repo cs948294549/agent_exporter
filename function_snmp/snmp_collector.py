@@ -125,6 +125,5 @@ def common_identify_vendor(ip: str, community: str):
 
 if __name__ == '__main__':
     import time
-    for i in range(2):
-        a = snmp_walk("10.10.0.1", "mmmm", "1.3.6.1.2.1.2.2.1.2", ttl=10)
-        print(a)
+    a = snmp_walk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2")
+    print(a)

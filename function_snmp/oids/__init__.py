@@ -52,6 +52,10 @@ from function_snmp.oids.entPhysicalTable_parser import (
     entPhysicalModelNameParser
 )
 
+from function_snmp.oids.ipNetToMediaTable import (
+    ipNetToMediaPhysAddress
+)
+
 # 定义__all__列表，指定可以被导入的公共接口
 __all__ = [
     'OIDParser',
@@ -86,7 +90,10 @@ __all__ = [
     'entPhysicalNameParser',
     'entPhysicalSoftwareRevParser',
     'entPhysicalSerialNumParser',
-    'entPhysicalModelNameParser'
+    'entPhysicalModelNameParser',
+
+    # arp表
+    'ipNetToMediaPhysAddress'
 ]
 
 # 创建解析器名称到解析器类的映射字典
@@ -122,8 +129,10 @@ _PARSER_CLASSES = {
     'entPhysicalNameParser': entPhysicalNameParser,
     'entPhysicalSoftwareRevParser': entPhysicalSoftwareRevParser,
     'entPhysicalSerialNumParser': entPhysicalSerialNumParser,
-    'entPhysicalModelNameParser': entPhysicalModelNameParser
+    'entPhysicalModelNameParser': entPhysicalModelNameParser,
 
+    # arp表
+    'ipNetToMediaPhysAddress': ipNetToMediaPhysAddress
 }
 
 def get_parser_by_name(name: str) -> Optional[Any]:
