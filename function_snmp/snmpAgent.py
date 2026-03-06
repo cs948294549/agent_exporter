@@ -44,5 +44,5 @@ from function_snmp.snmpAgent_Test import snmpget, snmpwalk
 
 
 if __name__ == '__main__':
-    aa = snmpget0("192.168.57.10", "Mrtg.Netease", "1.3.6.1.2.1.1.5.0", "utf-8")
+    aa = snmpget0("192.168.130.51", "public", "1.3.6.1.2.1.1.5.0", "utf-8")
     print(aa)

@@ -7,8 +7,6 @@ import logging
 import time
 from typing import Dict, List, Any
 from function_snmp.snmp_collector import snmp_walk
-from config import Config
-
 logger = logging.getLogger(__name__)
 
 # 定义物理模块相关的SNMP OID
@@ -99,7 +97,7 @@ def collect_physical_module_info(ip: str, community: str) -> Dict[str, Any]:
         }
 
 # 提供向后兼容的函数
-def collect_device_physical_info(ip: str, community: str=Config.common_community) -> Dict[str, Any]:
+def collect_device_physical_info(ip: str, community: str="public") -> Dict[str, Any]:
     """
     采集设备物理信息（向后兼容函数）
     

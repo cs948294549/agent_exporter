@@ -476,6 +476,10 @@ def collect_device_base_info(ip: str, community: str = "public") -> Dict[str, An
     return global_collector.collect_data(ip, community)
 
 
+# 导出所有解析器类
+__all__ = [
+    'collect_device_base_info'
+]
 
 if __name__ == '__main__':
     # aa = global_collector.collect_data(ip='10.162.0.14', community='public')

@@ -5,8 +5,7 @@ OID解析器工厂模块
 """
 import logging
 import threading
-import inspect
-from typing import Dict, List, Any, Optional, Set, Type, Tuple
+from typing import Dict, List, Any, Optional, Type, Tuple
 from function_snmp.oids import OIDParser, get_all_parsers, get_parser_by_name
 
 logger = logging.getLogger(__name__)
