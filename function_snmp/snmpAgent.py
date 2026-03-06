@@ -20,9 +20,10 @@ def snmpget(ip, community, oid, coding="utf-8"):
 
 def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
     try:
-        res = bulkwalk(ip, community, oids=oids, bulk_size=bulk_size)
+        res = bulkwalk(ip, community, oids=[oids], bulk_size=bulk_size)
         values = {}
         for i in res:
+            print("====", i)
             if type(i[1]) == bytes or type(i[1]) == int or type(i[1]) == str:
                 if type(i[1]) == bytes:
                     if coding == "utf-8":
@@ -44,8 +45,8 @@ def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
 
 
 if __name__ == '__main__':
-    aa = snmpget("192.168.110.153", "public", "1.3.6.1.2.1.1.1.0", "utf-8")
-    print(aa)
+    # aa = snmpget("192.168.110.153", "public", "1.3.6.1.2.1.1.1.0", "utf-8")
+    # print(aa)
 
-    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.1", bulk_size=2, coding="utf-8")
+    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2", bulk_size=10, coding="utf-9")
     print(aa)
