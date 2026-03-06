@@ -3,6 +3,7 @@ from flask import Flask, request
 # 导入任务相关蓝图
 from api.snmp_routes import snmp_bp
 from api.agent_routes import agent_bp
+from api.ssh_routes import ssh_bp
 
 
 def create_app():
@@ -25,6 +26,7 @@ def create_app():
     # 注册任务相关蓝图（示例：展示如何扩展新的API端点）
     app.register_blueprint(snmp_bp)
     app.register_blueprint(agent_bp)
+    app.register_blueprint(ssh_bp)
 
 
     @app.before_request
