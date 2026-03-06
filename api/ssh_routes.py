@@ -35,7 +35,15 @@ def ssh_agent_run_cmd():
                 "result": result,
             })
         else:
-            return APIResponse.error(message="执行失败")
+            return APIResponse.error(
+                message="执行失败",
+                data={
+                    "ip": ip,
+                    "cmds": cmds,
+                    "vendor": vendor,
+                    "result": None
+                }
+            )
     except Exception as e:
         return APIResponse.server_error(message=str(e))
 
