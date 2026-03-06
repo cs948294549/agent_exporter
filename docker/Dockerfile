@@ -25,11 +25,11 @@ VOLUME ["/app/logs","/app/configs"]
 
 
 # 暴露端口（与默认配置一致）
-EXPOSE 80
+EXPOSE 5000
 
 # 启动命令：执行启动脚本
 # 启动命令（生产环境推荐用gunicorn，开发环境用python app.py）
 # 开发环境：
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
 # 生产环境：
 #CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
