@@ -1,6 +1,6 @@
 from puresnmp import get, bulkwalk
 
-def snmpget0(ip, community, oid, coding="utf-8"):
+def snmpget(ip, community, oid, coding="utf-8"):
     try:
         res = get(ip, community, oid)
         if type(res) == bytes or type(res) == int or type(res) == str:
@@ -18,7 +18,7 @@ def snmpget0(ip, community, oid, coding="utf-8"):
         print("snmpget exception=", ip, oid, e)
         return None
 
-def snmpwalk0(ip, community, oids, bulk_size=10, coding="utf-8"):
+def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
     try:
         res = bulkwalk(ip, community, oids=oids, bulk_size=bulk_size)
         values = {}
@@ -40,9 +40,9 @@ def snmpwalk0(ip, community, oids, bulk_size=10, coding="utf-8"):
         return None
 
 
-from function_snmp.snmpAgent_Test import snmpget, snmpwalk
+# from function_snmp.snmpAgent_Test import snmpget, snmpwalk
 
 
 if __name__ == '__main__':
-    aa = snmpget0("192.168.130.51", "public", "1.3.6.1.2.1.1.5.0", "utf-8")
+    aa = snmpget("192.168.130.51", "public", "1.3.6.1.2.1.1.5.0", "utf-8")
     print(aa)

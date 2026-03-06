@@ -343,9 +343,11 @@ if __name__ == '__main__':
     # for t in at:
     #     t.join()
 
-    print("======",ConfigLoader.config)
+    # print("======",ConfigLoader.config)
     # t1("a1")
     # t4("a1")
+    aa = SSHClientFactory._identify_vendor("47.98.235.241")
+    print(aa)
 
 
 
