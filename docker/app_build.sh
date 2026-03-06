@@ -1,0 +1,1 @@
+docker build -f docker/Dockerfile -t agent-exporter:v1 .
