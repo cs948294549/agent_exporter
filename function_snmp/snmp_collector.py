@@ -11,7 +11,7 @@ from function_snmp.oid_parser_factory import global_oid_parser_factory
 logger = logging.getLogger(__name__)
 
 
-def snmp_request(ip: str, community: str, oid: str, request_type: str = 'walk', ttl: int = 300) -> Optional[Any]:
+def snmp_request(ip: str, community: str, oid: str, request_type: str = 'walk', ttl: int = 300, coding: str="utf-8") -> Optional[Any]:
     """
     统一的SNMP请求封装函数
     
@@ -22,6 +22,7 @@ def snmp_request(ip: str, community: str, oid: str, request_type: str = 'walk', 
         request_type: 请求类型，'get'或'walk'
         ttl: 当request_type为'walk'时的缓存有效期（秒）
             设置为0表示不使用缓存
+        coding: snmpget生效，返回数据解析方式
     
     Returns:
         Optional[Any]: 
@@ -34,7 +35,7 @@ def snmp_request(ip: str, community: str, oid: str, request_type: str = 'walk', 
     if request_type == 'get':
         # SNMP GET直接调用snmpAgent的snmpget方法
         logger.debug(f"执行SNMP GET: IP={ip}, OID={oid}")
-        return snmpget(ip, community, oid)
+        return snmpget(ip, community, oid, coding=coding)
     elif request_type == 'walk':
         # SNMP WALK通过工厂模式返回数据
         logger.debug(f"执行SNMP WALK (工厂模式): IP={ip}, OID={oid}, TTL={ttl}秒")
@@ -50,7 +51,7 @@ def snmp_request(ip: str, community: str, oid: str, request_type: str = 'walk', 
         raise ValueError(f"无效的request_type: {request_type}，必须为'get'或'walk'")
 
 
-def snmp_get(ip: str, community: str, oid: str) -> Optional[Any]:
+def snmp_get(ip: str, community: str, oid: str, coding: str="utf-8") -> Optional[Any]:
     """
     直接调用SNMP GET操作
     
@@ -62,7 +63,7 @@ def snmp_get(ip: str, community: str, oid: str) -> Optional[Any]:
     Returns:
         Optional[Any]: SNMP GET的原始结果
     """
-    return snmp_request(ip, community, oid, request_type='get')
+    return snmp_request(ip, community, oid, request_type='get', coding=coding)
 
 
 def snmp_walk(ip: str, community: str, oid: str, ttl: int = 300) -> Optional[Any]:

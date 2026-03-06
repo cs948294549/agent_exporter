@@ -31,7 +31,7 @@ def snmp_agent_get():
         if not ip or not oid:
             return APIResponse.param_error(message='ip和oid参数不能为空')
         
-        result = snmp_get(ip, community, oid)
+        result = snmp_get(ip, community, oid, coding=coding)
 
 
         return APIResponse.success(data={
@@ -53,9 +53,7 @@ def snmp_agent_walk():
         ip = data.get('ip')
         community = data.get('community', COMMON_COMMUNITY)
         oid = data.get('oid')
-        bulk_size = data.get('bulk_size', 10)
-        coding = data.get('coding', 'utf-8')
-        
+
         if not ip or not oid:
             return APIResponse.param_error(message='ip和oid参数不能为空')
 
