@@ -4,6 +4,7 @@ server:
 snmp:
   community: Mrtg.Netease
 ssh:
-  username: netops
+  username: root
+  password: abcd#123456
 logs:
   level: warning

@@ -346,8 +346,11 @@ if __name__ == '__main__':
     # print("======",ConfigLoader.config)
     # t1("a1")
     # t4("a1")
-    aa = SSHClientFactory._identify_vendor("47.98.235.241")
-    print(aa)
+    # aa = SSHClientFactory._identify_vendor("47.98.235.241")
+    # print(aa)
+
+    a1 = run_ssh_command(host="10.92.42.60", vendor='huawei', commands=["dis ip int brie"])
+    print(a1)
 
 
 

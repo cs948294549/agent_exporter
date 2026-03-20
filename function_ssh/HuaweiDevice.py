@@ -61,3 +61,9 @@ class HuaweiDevice(SSHDeviceBase):
             except Exception as e:
                 logger.warning("设备{} 执行失败, 执行命令 {}， 失败原因{}".format(self.host, command, str(e)))
                 break
+
+if __name__ == '__main__':
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+    dev = HuaweiDevice(host="10.92.42.60", username="root", password="a#asasa")
+    print(dev.current_prompt)

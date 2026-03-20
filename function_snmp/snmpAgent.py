@@ -8,7 +8,7 @@ def snmpget(ip, community, oid, coding="utf-8"):
                 if coding == "utf-8":
                     ret = res.decode("utf-8", "ignore")
                 else:
-                    ret = res
+                    ret = res.hex()
             else:
                 ret = res
         else:
@@ -39,13 +39,12 @@ def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
         print("snmpwalk exception=", ip, oids, e)
         return None
 
-
-# from function_snmp.snmpAgent_Test import snmpget, snmpwalk
-
-
 if __name__ == '__main__':
     # aa = snmpget("192.168.110.153", "public", "1.3.6.1.2.1.1.1.0", "utf-8")
     # print(aa)
 
-    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2", bulk_size=10, coding="utf-9")
+    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2", bulk_size=10, coding="utf-8")
+    print(aa)
+
+    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.2.2.1.2", bulk_size=10, coding="utf-8")
     print(aa)
