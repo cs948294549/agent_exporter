@@ -258,8 +258,10 @@ class SSHConnectionPool:
                         result = client.exec_commands(filter_commands)
                         if result is None:
                             logger.warning("{}执行命令{}失败,原因未知===尝试次数{}=".format(host, str(filter_commands), retry))
+                            self.disconnect(host=host, conn_name=client_info["tid"])
                         elif result == "failed":
                             logger.warning("{}执行命令{}失败,原因数据格式不匹配===尝试次数{}=".format(host, str(filter_commands), retry))
+                            self.release_connection(host=host, conn_name=client_info["tid"])
                         else:
                             logger.info("{}执行命令{}成功===尝试次数{}=".format(host, str(filter_commands), retry))
                             if "\n".join(result.values()).strip() == "":

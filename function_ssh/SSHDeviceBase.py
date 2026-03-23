@@ -93,7 +93,6 @@ class SSHDeviceBase(ABC):
                 line = self.ssh_shell.recv(1024)
 
                 line_data += line.decode('utf-8', 'ignore').replace("\r", "")
-                print("回显\n{}: {}".format(self.host, str(line_data)))
                 logger.debug("回显\n{}: {}".format(self.host, str(line_data)))
                 last_line = line_data.strip().split("\n")[-1]
                 logger.debug("最后一行\n{}".format(str(last_line)))
