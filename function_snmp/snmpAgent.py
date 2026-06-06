@@ -40,11 +40,8 @@ def snmpwalk(ip, community, oids, bulk_size=10, coding="utf-8"):
         return None
 
 if __name__ == '__main__':
-    # aa = snmpget("192.168.110.153", "public", "1.3.6.1.2.1.1.1.0", "utf-8")
+    aa = snmpget("10.92.42.64", "Mrtg.Dikong", "1.3.6.1.2.1.1.1.0", "utf-8")
+    print(aa)
+
+    # aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2", bulk_size=10, coding="utf-8")
     # print(aa)
-
-    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.4.22.1.2", bulk_size=10, coding="utf-8")
-    print(aa)
-
-    aa = snmpwalk("192.168.110.153", "public", "1.3.6.1.2.1.2.2.1.2", bulk_size=10, coding="utf-8")
-    print(aa)

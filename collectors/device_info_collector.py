@@ -199,13 +199,9 @@ class HuaweiDeviceInfoCollector:
         
         # 采集华为设备型号
         patch_array = snmp_walk(ip, community, huawei_oids.get('hwPatchInstall'))
-        if patch_array:
-            patch = list(patch_array.values())[0]
-            if patch is not None:
-                patch = patch.decode("utf-8", "ignore")
-                if patch.strip() == "None":
-                    patch = ""
-            else:
+        if len(patch_array)>0:
+            patch = patch_array[0]["value"]
+            if patch.strip() == "None":
                 patch = ""
         return {
             'hardware': hardware,
@@ -482,12 +478,6 @@ __all__ = [
 ]
 
 if __name__ == '__main__':
-    # aa = global_collector.collect_data(ip='10.162.0.14', community='public')
-    # print(aa)
-    #
-    # aa = global_collector.collect_data(ip='10.80.163.98', community='public')
-    # print(aa)
-    #
-    # aa = global_collector.collect_data(ip='10.162.0.16', community='public')
-    # print(aa)
+    aa = global_collector.collect_data(ip='10.92.42.64', community='Mrtg.Dikong')
+    print(aa)
     pass

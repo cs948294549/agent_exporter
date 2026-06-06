@@ -110,6 +110,9 @@ def collect_device_physical_info(ip: str, community: str="public") -> Dict[str, 
     """
     return collect_physical_module_info(ip, community)
 
+__all__ = ["collect_device_physical_info"]
+
+
 if __name__ == "__main__":
     # 测试代码
     import json

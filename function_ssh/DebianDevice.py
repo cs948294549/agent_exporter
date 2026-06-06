@@ -56,3 +56,8 @@ class DebianDevice(SSHDeviceBase):
             except Exception as e:
                 logger.warning("设备{} 执行失败, 执行命令 {}， 失败原因{}".format(self.host, command, str(e)))
                 break
+
+if __name__ == '__main__':
+    aa = DebianDevice("47.98.235.241", username="netops", password="Chensong6^")
+    res = aa.exec_commands(["ls -lh", "pwd"])
+    print(res)

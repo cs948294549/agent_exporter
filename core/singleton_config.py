@@ -7,6 +7,11 @@ default_config = {
         "host": "0.0.0.0",
         "port": 8080,
     },
+    "center": {
+        "url": "http://127.0.0.1:8080",
+        "agent_id": "agent-001",
+        "pull_interval": 60,
+    },
     "snmp": {
         "community": "public",
     },

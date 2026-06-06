@@ -100,7 +100,7 @@ def collect_interface_basic_info(ip: str, community: str="public") -> Dict[str, 
         for key in results.keys():
             if key == "ifName":
                 continue
-            
+
             for item in results[key]:
                 interface_id = item["index"]
                 if interface_id in interfaces_dict:
@@ -557,6 +557,9 @@ def collect_interface_metric(ip: str, community: str = "public", metric_type: st
     """
     return metric_collector.collect_metric(ip, community, metric_type=metric_type)
 
+__all__ = ['collect_interface_basic_info', 'collect_interface_status', 'collect_interface_metric']
+
+
 # ====================== 示例使用 ======================
 '''
 所有指标项目
@@ -584,25 +587,25 @@ print(json.dumps(metrics, indent=4))
 if __name__ == "__main__":
     import json
     # 示例使用
-    test_ip = "192.168.1.1"
-    test_community = "public"
+    test_ip = "10.92.42.60"
+    test_community = "Mrtg.Dikong"
     
     # 采集接口基础信息
     basic_info = collect_interface_basic_info(test_ip, test_community)
     print(json.dumps(basic_info, indent=4))
     
     # 采集接口指标信息
-    metrics = metric_collector.collect_metric(test_ip, test_community, metric_type='bps', bit_width=64)
+    metrics = metric_collector.collect_metric(test_ip, test_community, metric_type='interface_bps', bit_width=64)
     print(metrics)
-    metrics1 =metric_collector.collect_metric(test_ip, test_community, metric_type='pps', bit_width=64)
+    metrics1 =metric_collector.collect_metric(test_ip, test_community, metric_type='interface_pps', bit_width=64)
     print(metrics1)
 
 
 
-    time.sleep(10)
-    metrics = metric_collector.collect_metric(test_ip, test_community, metric_type='bps', bit_width=64)
+    time.sleep(30)
+    metrics = metric_collector.collect_metric(test_ip, test_community, metric_type='interface_bps', bit_width=64)
     print(json.dumps(metrics, indent=4))
-    metrics1 = metric_collector.collect_metric(test_ip, test_community, metric_type='pps', bit_width=64)
+    metrics1 = metric_collector.collect_metric(test_ip, test_community, metric_type='interface_pps', bit_width=64)
     print(json.dumps(metrics1, indent=4))
 
 
