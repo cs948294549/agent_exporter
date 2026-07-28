@@ -26,7 +26,7 @@ METRIC_COLLECTORS = {
     "device_base":      lambda ip, community, **kw: collect_device_base_info(ip=ip, community=community),
     "interface_basic":  lambda ip, community, **kw: collect_interface_basic_info(ip=ip, community=community),
     "interface_status": lambda ip, community, **kw: collect_interface_status(ip=ip, community=community),
-    "interface_metric": lambda ip, community, **kw: collect_interface_metric(ip=ip, community=community, metric_type=kw["metric_type"]),
+    "interface_metric": lambda ip, community, **kw: collect_interface_metric(ip=ip, community=community, metric_type=kw.get("metric_type", "")),
     "device_physical":  lambda ip, community, **kw: collect_device_physical_info(ip=ip, community=community),
 }
 
@@ -38,6 +38,10 @@ def _collect_with_lock(ip: str, community: str, metrics: list) -> Dict[str, Any]
     """
     在 per-IP 锁保护下执行采集，确保同一 IP 的多项指标串行执行。
 
+    metrics 支持两种格式:
+    - 简单字符串: ["device_base", "interface_basic"]
+    - 带参数的字典: [{"name": "interface_metric", "metric_type": "traffic"}, ...]
+
     Returns:
         {
             "ip": "10.0.0.1",
@@ -47,29 +51,43 @@ def _collect_with_lock(ip: str, community: str, metrics: list) -> Dict[str, Any]
                 "interface_basic": {...},
                 ...
             },
-            "errors": {"metric_name": "error_msg", ...},
-            "timestamp": 1234567890
+            "errors": {"metric_name": "error_msg", ...}
         }
     """
     results = {}
     errors = {}
 
-    with ip_lock_manager.acquire(ip):
-        logger.info(f"[{ip}] 开始串行采集 {len(metrics)} 项指标: {metrics}")
+    # 统一解析 metrics，提取指标名和额外参数
+    parsed_metrics = []
+    for item in metrics:
+        if isinstance(item, str):
+            parsed_metrics.append({"name": item})
+        elif isinstance(item, dict):
+            parsed_metrics.append(item)
+        else:
+            errors[str(item)] = f"无效的指标配置: {item}"
 
-        for metric in metrics:
-            collector = METRIC_COLLECTORS.get(metric)
+    with ip_lock_manager.acquire(ip):
+        logger.info(f"[{ip}] 开始串行采集 {len(parsed_metrics)} 项指标")
+
+        for metric_cfg in parsed_metrics:
+            cfg = metric_cfg.copy()
+            metric_name = cfg.pop("name")
+            # 排除 name 本身，剩余作为 extra_kwargs 传给采集函数
+            extra_kwargs = cfg
+
+            collector = METRIC_COLLECTORS.get(metric_name)
             if not collector:
-                errors[metric] = f"未知指标: {metric}"
+                errors[metric_name] = f"未知指标: {metric_name}"
                 continue
 
             try:
-                result = collector(ip=ip, community=community)
-                results[metric] = result
-                logger.debug(f"[{ip}] {metric} 采集完成")
+                result = collector(ip=ip, community=community, **extra_kwargs)
+                results[metric_name] = result
+                logger.debug(f"[{ip}] {metric_name} 采集完成")
             except Exception as e:
-                errors[metric] = str(e)
-                logger.error(f"[{ip}] {metric} 采集失败: {e}")
+                errors[metric_name] = str(e)
+                logger.error(f"[{ip}] {metric_name} 采集失败: {e}")
 
     # 综合状态判定
     if not errors:
@@ -78,7 +96,12 @@ def _collect_with_lock(ip: str, community: str, metrics: list) -> Dict[str, Any]
         status = "partial"
     else:
         status = "error"
-
+    logger.info({
+        "ip": ip,
+        "status": status,
+        "results": results,
+        "errors": errors,
+    })
     return {
         "ip": ip,
         "status": status,
@@ -114,5 +137,34 @@ def handle_device_info(task_config: dict):
 
 
 if __name__ == '__main__':
-    aa = _collect_with_lock("10.92.42.64", COMMON_COMMUNITY, "interface_basic")
-    print(aa)
+    import time
+    from core.scheduler import scheduler
+
+    # 前台运行：配置 DEBUG 日志，阻塞主线程便于观察输出
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+
+    trigger_kwargs = {"seconds": 10}
+    job_kwargs = {
+        "ip": "10.92.42.64",
+        "community": COMMON_COMMUNITY,
+        "metrics": [{"name": "interface_metric", "metric_type": "interface_bps"}]
+    }
+    scheduler.add_job(
+        func=_collect_with_lock,
+        trigger="interval",
+        id="001",
+        name="interface-001",
+        replace_existing=True,
+        kwargs=job_kwargs,
+        **trigger_kwargs,
+    )
+    scheduler.start()
+    print("Scheduler 已启动，每 10s 执行一次采集，Ctrl+C 停止...")
+
+    try:
+        while True:
+            time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
+        print("Scheduler 已停止")
+    
