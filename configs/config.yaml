@@ -6,9 +6,9 @@ center:
   agent_id: agent-001
   pull_interval: 60
 snmp:
-  community: Mrtg.Dikong
+  community: vdiannet
 ssh:
-  username: root
-  password: abcd#123456
+  username: chensong
+  password: Admin@123
 logs:
   level: warning
