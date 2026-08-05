@@ -22,7 +22,7 @@ COPY . .
 # 仅声明 /app/logs 为卷目录（无实际绑定）
 # 注意：configs 不声明为 VOLUME，避免覆盖镜像内的配置文件
 # 如需修改配置，运行时通过 -v 挂载：-v /path/to/configs:/app/configs
-VOLUME ["/app/logs"]
+VOLUME ["/app/logs", "/app/configs"]
 
 
 
