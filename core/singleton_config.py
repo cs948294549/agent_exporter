@@ -52,6 +52,7 @@ class SingletonConfig:
         os.path.dirname(os.path.dirname(__file__)),  # 上级目录（app/）
         "configs", "config.yaml"
     )
+    print("配置目录", EXTERNAL_CONFIG_PATH)
 
     def __new__(cls):
         """单例核心：创建实例前检查是否已存在，不存在则新建"""
