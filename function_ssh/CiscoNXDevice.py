@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 class CiscoNXDevice(SSHDeviceBase):
     def __init__(self, host, username, password):
-        init_prompt = re.compile(r"<(.+?)>$")
+        init_prompt = re.compile(r"[a-zA-Z0-9_()/:.+-]+?#$")
 
         self.error_prompts = [
             "at '^' marker",
