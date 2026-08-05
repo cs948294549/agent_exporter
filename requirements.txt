@@ -7,3 +7,4 @@ kafka-python
 redis
 pyyaml
 psutil
+apscheduler==3.11.3

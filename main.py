@@ -2,8 +2,8 @@
 from core.app import create_app
 from core.logger import setup_logger
 from core.singleton_config import ConfigLoader
-from core.scheduler import scheduler
-from services.task_main import start_task_pull_service
+# from core.scheduler import scheduler
+# from services.task_main import start_task_pull_service
 
 # 初始化日志系统
 logger = setup_logger()
@@ -14,12 +14,12 @@ def main():
     app = create_app()
 
     # 启动调度器
-    scheduler.start()
-    logger.info("调度器已启动")
+    # scheduler.start()
+    # logger.info("调度器已启动")
 
     # 启动任务拉取服务
-    pull_interval = ConfigLoader.get("center.pull_interval", 60)
-    start_task_pull_service(interval=pull_interval)
+    # pull_interval = ConfigLoader.get("center.pull_interval", 60)
+    # start_task_pull_service(interval=pull_interval)
 
     # 运行Flask应用
     try:
@@ -28,7 +28,7 @@ def main():
     except KeyboardInterrupt:
         logger.info("收到停止信号，正在关闭...")
     finally:
-        scheduler.shutdown(wait=False)
+        # scheduler.shutdown(wait=False)
         logger.info("调度器已关闭")
 
 
