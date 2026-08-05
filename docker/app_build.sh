@@ -1,1 +1,1 @@
-docker build -f docker/Dockerfile -t agent-exporter:v1 .
+docker build --no-cache -f docker/Dockerfile -t agent-exporter:v1 .
