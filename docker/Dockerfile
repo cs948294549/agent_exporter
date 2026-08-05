@@ -14,7 +14,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # 清理缓存减少镜像体积
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+RUN pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple/ && pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
 
 # 复制项目代码（含默认配置）
 COPY . .
