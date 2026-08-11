@@ -88,7 +88,8 @@ def snmp_walk(ip: str, community: str, oid: str, ttl: int = 300) -> Optional[Any
 
 # 厂商标识符映射，用于自动识别厂商
 VENDOR_IDENTIFIERS = {
-    'cisco': ['cisco', 'ios', 'catos'],
+    'cisco_ios': ['ios'],
+    'cisco_nx': ['nx-os', 'nxos', 'cisco', 'catos'],
     'huawei': ['huawei', 'vrp', 'quidway', 'huarong', 'futurematrix'],
     'h3c': ['h3c', '3com', 'hp'],
     'juniper': ['juniper', 'junos'],
