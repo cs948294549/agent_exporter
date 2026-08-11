@@ -203,6 +203,16 @@ class SSHConnectionPool:
                 logger.info("新建连接==={} {}".format(str(client), conn_name))
                 return self.hosts[host][conn_name]
         else:
+            # 创建客户端失败，需要释放锁并清理连接信息
+            logger.error(f"创建设备 {host} 的SSH客户端失败，释放锁并清理连接")
+            with self.lock:
+                if host in self.hosts and conn_name in self.hosts[host]:
+                    try:
+                        self.hosts[host][conn_name]["lock"].release()
+                    except Exception as e:
+                        logger.warning(f"释放锁失败: {e}")
+                    # 删除失败的连接信息
+                    del self.hosts[host][conn_name]
             return None
 
     def release_connection(self, host: str, conn_name: str):
