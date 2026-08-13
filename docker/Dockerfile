@@ -4,6 +4,10 @@ FROM python:3.9-slim
 # 设置工作目录
 WORKDIR /app
 
+# 设置时区为东八区
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # 安装系统依赖（如需编译依赖，如 pymysql，可加）
 # RUN apt-get update && apt-get install -y --no-install-recommends \
 #     gcc \
